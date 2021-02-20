@@ -3,4 +3,4 @@
 talk about cellular automaton
 talk about Big O application to algorithm
 
-add completion date
+add date updated

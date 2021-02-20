@@ -97,13 +97,13 @@ const app = {
   for (let x = 0; x < grid.width; x++) {
    const newColumnEl = document.createElement('div')
    newColumnEl.className = 'column'
-   newColumnEl.parentElement = gridEl
+   gridEl.appendChild(newColumnEl)
 
    for (let y = 0; y < grid.height; y++) {
     if (grid.virtualGrid[x][y] === 1) {
-     const newTile = document.createElement('div')
-     newTile.className = 'tile'
-     newTile.parentElement = newColumnEl
+     const newTileEl = document.createElement('div')
+     newTileEl.className = 'tile'
+     newColumnEl.appendChild(newTileEl)
     }
    }
   }
