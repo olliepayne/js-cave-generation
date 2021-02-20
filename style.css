@@ -1,15 +1,21 @@
 #grid {
- display: grid;
- grid-template-columns: repeat(10, 20px);
+ display: flex;
+ /* flex-direction: column-reverse; */
+ /* flex-direction: column; */
 }
 
-.tileEmpty {
+.column {
+ display: flex;
+ flex-direction: column-reverse;
+}
+
+.tile-empty {
  width: 20px;
  height: 20px;
 }
 
-.tileFilled {
- background-color: gray;
+.tile-filled {
+ background-color: black;
  width: 20px;
  height: 20px;
 }

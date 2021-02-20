@@ -1,9 +1,9 @@
 const gridEl = document.getElementById('grid')
 
 const grid = {
- width: 8,
- height: 8,
- fillPercent: 0.3,
+ width: 20,
+ height: 20,
+ fillPercent: 0.45,
  generations: 3,
  virtualGrid: [],
  fill: function() {
@@ -20,15 +20,17 @@ const grid = {
    this.virtualGrid.push(newRow)
   }
  },
- getNeighbors: function(x, y) {
+ getNeighborCount: function(x, y) {
   let neighborCount = 0
 
   for(let neighborX = x - 1; neighborX <= x + 1; neighborX++) {
    for(let neighborY = y - 1; neighborY <= y + 1; neighborY++) {
-    if(neighborX !== x && neighborY !== y) {
-     if(neighborX > 0 && neighborX < this.width && neighborY > 0 && neighborY < this.height) {
+    if(neighborX >= 0 && neighborX < this.width && neighborY >= 0 && neighborY < this.height) {
+     if(neighborX !== x && neighborY !== y) {
       if(this.virtualGrid[neighborX][neighborY] === 1) neighborCount++
      }
+    } else {
+     neighborCount++
     }
    }
   }
@@ -36,11 +38,15 @@ const grid = {
   return neighborCount
  },
  filter: function() {
-  for(let x = 0; x < this.height; x++) {
-   for(let y = 0; y < this.width; y++) {
-    if(this.virtualGrid[x][y] === 0) {
-     const neighborCount = this.getNeighbors(x, y)
-     if(neighborCount > 3) this.virtualGrid[x][y] = 1
+  for(let i = 0; i < this.generations; i++) {
+   for(let x = 0; x < this.height; x++) {
+    for(let y = 0; y < this.width; y++) {
+     const neighborCount = this.getNeighborCount(x, y)
+     if(neighborCount > 2) {
+      this.virtualGrid[x][y] = 0
+     } else if(neighborCount < 4) {
+      this.virtualGrid[x][y] = 1
+     }
     }
    }
   }
@@ -53,8 +59,27 @@ const grid = {
 }
 
 const app = {
+ render: function() {
+  for(let x = 0; x < grid.width; x++) {
+   const columnEl = document.createElement('div')
+   gridEl.appendChild(columnEl)
+   columnEl.className = 'column'
+   columnEl.id = `column-${x}`
+   for(let y = 0; y < grid.height; y++) {
+    const tileEl = document.createElement('div')
+    columnEl.appendChild(tileEl)
+    tileEl.id = `tile-${x * grid.width + y}`
+    if(grid.virtualGrid[x][y] === 1) {
+     tileEl.className = 'tile-filled'
+    } else {
+     tileEl.className = 'tile-empty'
+    }
+   }
+  }
+ },
  init: function() {
   grid.generate()
+  this.render()
  }
 }
 
