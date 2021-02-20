@@ -4,13 +4,13 @@ const grid = {
  width: 10,
  height: 10,
  fillPercent: 0.3,
- generations: 0,
+ generations: 3,
  virtualGrid: [],
  domGrid: [],
  fill() {
-  for (let x = 0; x < this.width; x++) {
+  for (let y = 0; y < this.height; y++) {
    const newColumn = []
-   for (let y = 0; y < this.height; y++) {
+   for (let x = 0; x < this.width; x++) {
     const randomNum = Math.random()
     if (randomNum < this.fillPercent) {
      newColumn.push(1)
@@ -25,18 +25,39 @@ const grid = {
   for (let i = 0; i < this.generations; i++) {
    const gridInstance = this.virtualGrid.slice()
 
-   for (let x = 1; x < this.width - 1; x++) {
-    for (let y = 1; y < this.height - 1; y++) {
+   for (let y = 0; y < this.height; y++) {
+    for (let x = 0; x < this.width; x++) {
      if (gridInstance[x][y] === 0) {
-      this.emptyRules(gridInstance, { x, y })
+      this.emptyRules({ x, y })
      } else if (gridInstance[x][y] === 1) {
-      this.filledRules(gridInstance, { x, y })
+      // this.filledRules({ x, y })
      }
     }
    }
   }
  },
- emptyRules(gridInstance, coords) {
+ emptyRules(coords) {
+  let filledNeighbors = 0
+
+  for (let neighborX = coords.x - 1; neighborX <= coords.x + 1; neighborX++) {
+   for (let neighborY = coords.y - 1; neighborY <= coords.y + 1; neighborY++) {
+    if (neighborX === coords.x && neighborY === coords.y) {
+     continue
+    } else if(neighborX < 0 || neighborX > this.width - 1 || neighborY < 0 || neighborY > this.height - 1) {
+     continue
+    }
+
+    if (this.virtualGrid[neighborX][neighborY] === 1) {
+     filledNeighbors++
+    }
+   }
+  }
+
+  if (filledNeighbors > 4) {
+   this.virtualGrid[coords.x][coords.y] = 1
+  }
+ },
+ filledRules(coords) {
   let filledNeighbors = 0
 
   for (let neighborX = coords.x - 1; neighborX <= coords.x + 1; neighborX++) {
@@ -45,30 +66,12 @@ const grid = {
      continue
     }
 
-    if (gridInstance[neighborX][neighborY] === 1) {
+    if(this.virtualGrid[neighborX][neighborY] === 1) {
      filledNeighbors++
     }
-   }
-  }
 
-  if (filledNeighbors > 6) {
-   this.virtualGrid[coords.x][coords.y] = 1
-
-   return
-  }
- },
- filledRules(gridInstance, coords) {
-  for (let neighborX = coords.x - 1; neighborX <= coords.x + 1; neighborX++) {
-   for (let neighborY = coords.y - 1; neighborY <= coords.y + 1; neighborY++) {
-    if (neighborX === coords.x && neighborY === coords.y) {
-     continue
-    }
-
-    if (gridInstance[neighborX][neighborY] === 0) {
+    if (filledNeighbors < 3) {
      this.virtualGrid[coords.x][coords.y] = 0
-     this.virtualGrid[neighborX][neighborY] = 1
-
-     return
     }
    }
   }
@@ -81,11 +84,11 @@ const app = {
   grid.filter()
   console.log(grid.virtualGrid)
 
-  // this.render()
+  this.render()
  },
  render() {
-  for (let x = 0; x < grid.width; x++) {
-   for (let y = 0; y < grid.height; y++) {
+  for (let y = 0; y < grid.height; y++) {
+   for (let x = 0; x < grid.width; x++) {
     if (grid.virtualGrid[x][y] === 1) {
      const newTileEl = document.createElement('div')
      newTileEl.className = 'tileFilled'

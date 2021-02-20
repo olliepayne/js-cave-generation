@@ -1,7 +1,6 @@
 #grid {
  display: grid;
- grid-template-rows: 10;
- grid-template-columns: 10;
+ grid-template-columns: repeat(10, 20px);
 }
 
 .tileEmpty {
