@@ -23,8 +23,8 @@ const grid = {
  getNeighborCount: function(x, y) {
   let neighborCount = 0
 
-  for(let neighborX = x - 1; neighborX <= x + 1; neighborX++) {
-   for(let neighborY = y - 1; neighborY <= y + 1; neighborY++) {
+  for(let neighborX = x - 2; neighborX <= x + 2; neighborX++) {
+   for(let neighborY = y - 2; neighborY <= y + 2; neighborY++) {
     if(neighborX >= 0 && neighborX < this.width && neighborY >= 0 && neighborY < this.height) {
      if(neighborX !== x && neighborY !== y) {
       if(this.virtualGrid[neighborX][neighborY] === 1) neighborCount++
@@ -42,9 +42,9 @@ const grid = {
    for(let x = 0; x < this.height; x++) {
     for(let y = 0; y < this.width; y++) {
      const neighborCount = this.getNeighborCount(x, y)
-     if(neighborCount > 2) {
+     if(neighborCount > 4) {
       this.virtualGrid[x][y] = 0
-     } else if(neighborCount < 4) {
+     } else if(neighborCount < 3) {
       this.virtualGrid[x][y] = 1
      }
     }
