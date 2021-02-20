@@ -3,30 +3,23 @@ const gridEl = document.getElementById('grid')
 const grid = {
  width: 10,
  height: 10,
- fillPercent: 0.4,
- generations: 2,
+ fillPercent: 0.3,
+ generations: 0,
  virtualGrid: [],
  domGrid: [],
  fill() {
   for (let x = 0; x < this.width; x++) {
    const newColumn = []
    for (let y = 0; y < this.height; y++) {
-    if (x === 0 || x === this.width - 1 || y === 0 || y === this.height - 1) {
-     newColumn[y] = 1
+    const randomNum = Math.random()
+    if (randomNum < this.fillPercent) {
+     newColumn.push(1)
     } else {
-     const randomNum = Math.random()
-     if (randomNum < this.fillPercent) {
-      newColumn[y] = 1
-     } else {
-      newColumn[y] = 0
-     }
+     newColumn.push(0)
     }
    }
    this.virtualGrid.push(newColumn)
   }
-
-  // console.log('Initial:')
-  // console.log(this.virtualGrid)
  },
  filter() {
   for (let i = 0; i < this.generations; i++) {
@@ -41,9 +34,6 @@ const grid = {
      }
     }
    }
-
-   // console.log(`Generation ${i + 1}:`)
-   // console.log(grid.virtualGrid)
   }
  },
  emptyRules(gridInstance, coords) {
@@ -91,19 +81,21 @@ const app = {
   grid.filter()
   console.log(grid.virtualGrid)
 
-  this.render()
+  // this.render()
  },
  render() {
   for (let x = 0; x < grid.width; x++) {
-   const newColumnEl = document.createElement('div')
-   newColumnEl.className = 'column'
-   gridEl.appendChild(newColumnEl)
-
    for (let y = 0; y < grid.height; y++) {
     if (grid.virtualGrid[x][y] === 1) {
      const newTileEl = document.createElement('div')
-     newTileEl.className = 'tile'
-     newColumnEl.appendChild(newTileEl)
+     newTileEl.className = 'tileFilled'
+     newTileEl.id = `tile-${x + (y * grid.width)}`
+     gridEl.appendChild(newTileEl)
+    } else {
+     const newTileEl = document.createElement('div')
+     newTileEl.className = 'tileEmpty'
+     newTileEl.id = `tile-${x + (y * grid.width)}`
+     gridEl.appendChild(newTileEl)
     }
    }
   }
@@ -111,9 +103,3 @@ const app = {
 }
 
 app.init()
-
-// grid.fill()
-// console.log('Initial:')
-// console.log(grid.virtualGrid)
-
-// grid.filter()
