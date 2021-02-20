@@ -1,26 +1,58 @@
-// set board size
-// fill board randomly
-// update each cell state for set number of 'phases'
-
 const board = {
+ width: 5,
+ height: 5,
+ fillPercent: 0.3,
+ generations: 3,
  virtualGrid: [],
  domGrid: [],
- fillBoard() {
-  for(let y = 0; y < 5; y++) {
+ fill() {
+  for(let x = 0; x < this.width; x++) {
    const newRow = []
-   for(let x = 0; x < 5; x++) {
-    newRow[x] = Math.round(Math.random())
+   for(let y = 0; y < this.height; y++) {
+    const randomNum = Math.random()
+    if(randomNum < this.fillPercent) {
+     newRow[y] = 1
+    } else {
+     newRow[y] = 0
+    }
    }
    this.virtualGrid.push(newRow)
   }
  },
- filterBoard() {
-  for(let i = 0; i < 3; i++) {
-   
+ filter() {
+  for(let i = 0; i < this.generations; i++) {
+   for(let x = 0; x < this.width; x++) {
+    for(let y = 0; y < this.height; y++) {
+     const neighbors = this.checkNeighbors({ x, y })
+
+     if(this.virtualGrid[x][y] === 1) {
+      if(neighbors < 2) this.virtualGrid[x][y] = 0
+     } else if(this.virtualGrid[x][y] === 0) {
+      if(neighbors > 4) this.virtualGrid[x][y] = 1
+     }
+    }
+   }
+
+   console.log(`Generation ${i + 1}:`)
+   console.log(board.virtualGrid)
   }
  },
- checkNeighbors() {
+ checkNeighbors(coords) {
+  let neighborCount = 0
 
+  for(let neighborX = coords.x - 1; neighborX <= coords.x + 1; neighborX++) {
+   for(let neighborY = coords.y - 1; neighborY <= coords.y  + 1; neighborY++) {
+    if(neighborX === coords.x && neighborY === coords.y) {
+     continue
+    } else if(neighborX < 0 || neighborX === this.width || neighborY < 0 || neighborY === this.height) {
+     continue
+    } else if(this.virtualGrid[neighborX][neighborY] === 1) {
+     neighborCount++
+    }
+   }
+  }
+
+  return neighborCount
  }
 }
 
@@ -28,5 +60,8 @@ const app = {
  
 }
 
-board.fillBoard()
+board.fill()
+console.log('Initial:')
 console.log(board.virtualGrid)
+
+board.filter()
