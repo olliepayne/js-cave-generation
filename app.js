@@ -6,6 +6,7 @@ const grid = {
  fillPercent: 0.45,
  generations: 3,
  virtualGrid: [],
+ tileEls: [],
  fill: function() {
   for(let x = 0; x < this.width; x++) {
    const newRow = []
@@ -52,11 +53,17 @@ const grid = {
   }
  },
  generate: function() {
+  this.virtualGrid = []
+  this.tileEls.forEach(tile => tile.remove())
+  this.tileEls = []
+
   this.fill()
   this.filter()
-  console.log(this.virtualGrid)
  }
 }
+
+const colorPickerEl = document.getElementById('tile-color')
+const applyBtnEl = document.getElementById('apply-btn')
 
 const app = {
  render: function() {
@@ -71,11 +78,19 @@ const app = {
     tileEl.id = `tile-${x * grid.width + y}`
     if(grid.virtualGrid[x][y] === 1) {
      tileEl.className = 'tile-filled'
+     tileEl.style.backgroundColor = colorPickerEl.value
     } else {
      tileEl.className = 'tile-empty'
     }
+    
+    grid.tileEls.push(tileEl)
    }
   }
+ },
+ changeColor: function() {
+  grid.tileEls.forEach(tile => {
+   if(tile.className === 'tile-filled') tile.style.backgroundColor = colorPickerEl.value
+  })
  },
  init: function() {
   grid.generate()
@@ -84,3 +99,9 @@ const app = {
 }
 
 app.init()
+applyBtnEl.addEventListener('click', app.changeColor)
+
+const generateBtnEl = document.getElementById('generate-btn')
+generateBtnEl.addEventListener('click', () => {
+ app.init()
+})

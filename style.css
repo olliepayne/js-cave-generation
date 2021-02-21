@@ -1,7 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+* {
+ font-family: 'Roboto Mono', monospace;
+}
+
+body {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+
+button {
+ border: none;
+ border-radius: 5px;
+ padding: 5px 5px;
+}
+
+button:hover {
+ cursor: pointer;
+ opacity: 75%;
+ transform: scale(1.2);
+ transition: 0.25s;
+}
+
+#generate-btn {
+ background-color: rgb(167, 228, 179);
+}
+
 #grid {
  display: flex;
- /* flex-direction: column-reverse; */
- /* flex-direction: column; */
 }
 
 .column {
@@ -18,4 +45,15 @@
  background-color: black;
  width: 20px;
  height: 20px;
+}
+
+#color-container {
+ margin-top: 20px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+
+#color-container * {
+ margin-bottom: 10px;
 }
