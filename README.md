@@ -12,7 +12,7 @@
 I used to play with cave generation back a few years ago when I developed games as a hobby. I decided to revive my love for RNG and algorithm by creating a 2D 'platformer style cave', using a basic level of [Cellular Automaton](https://mathworld.wolfram.com/CellularAutomaton.html). Would be cool to code a little man to jump around this sometime.
 
 ### Screenshots
-<img src="./" />
+<img src="./screenshot.png" />
 'Cave Generation'
 
 ### Technologies Used
