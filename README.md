@@ -20,9 +20,6 @@ I used to play with cave generation back a few years ago when I developed games 
 * CSS
 * JavaScript
 
-### Favorites
-Besides implementing auth scratch, I am extremely proud of the Route Finder, and the handler I built to manage and divide our the search results from the Route Finder into separate pages.
-
 ### Growth
 Due to my skill with this Cellular Automaton previously being fine tuned, I found it slighly challenging to get to grips with the basics again. The algorithmic logic helped refine my JS ability by ultimately solving a more complex problem.
 
